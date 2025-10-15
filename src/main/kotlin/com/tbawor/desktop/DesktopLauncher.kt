@@ -6,18 +6,22 @@ import com.tbawor.game.EmptyGame
 
 private const val WINDOW_WIDTH = 500
 private const val WINDOW_HEIGHT = 500
-private const val WINDOW_TITLE = "Game"
+private const val WINDOW_TITLE = "This window is werid"
+
 
 object DesktopLauncher {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val config = Lwjgl3ApplicationConfiguration().apply {
-            setTitle(WINDOW_TITLE)
-            setWindowedMode(WINDOW_WIDTH, WINDOW_HEIGHT)
-            useVsync(true)
-            setForegroundFPS(60)
-        }
 
-        Lwjgl3Application(EmptyGame(), config)
+  @JvmStatic
+  fun main(args: Array<String>) {
+    val config = Lwjgl3ApplicationConfiguration().apply {
+      setTitle(WINDOW_TITLE)
+      setWindowedMode(WINDOW_WIDTH, WINDOW_HEIGHT)
+      useVsync(true)
+      setForegroundFPS(60)
+      setMaximized(true)
     }
+
+    Lwjgl3Application(EmptyGame(), config)
+  }
+
 }
