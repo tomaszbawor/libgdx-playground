@@ -11,11 +11,12 @@ class IdleGame : Game() {
   private lateinit var machine: ScreenStateMachine
 
   override fun create() {
+    val gameplayState = com.tbawor.core.domain.GameplayState()
     machine = ScreenStateMachine(
       this,
       mapOf(
         GameState.MAIN_MENU to { MainMenuScreen(machine) },
-        GameState.PLAYING to { IdleGameScreen(machine) },
+        GameState.PLAYING to { IdleGameScreen(machine, gameplayState) },
         GameState.OPTIONS to { OptionsScreen(machine) }
       )
     )

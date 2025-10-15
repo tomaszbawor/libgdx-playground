@@ -22,7 +22,10 @@ import com.tbawor.core.GameState
 import com.tbawor.core.ScreenStateMachine
 import java.util.*
 
-class IdleGameScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
+class IdleGameScreen(
+  private val machine: ScreenStateMachine,
+  private val state: com.tbawor.core.domain.GameplayState
+) : ScreenAdapter() {
   private val stage = Stage(ScreenViewport())
   private val disposables = mutableListOf<Disposable>()
 
@@ -36,12 +39,6 @@ class IdleGameScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
   private val clickButton = TextButton("Work (+$1)", buttonStyle)
   private val buyBuildingButton = TextButton("Buy Building", buttonStyle)
 
-  private var money = 0.0
-  private var passiveIncome = 0.0
-  private var buildingCount = 0
-  private var buildingCost = 20.0
-  private val passivePerBuilding = 5.0
-
   init {
     setupUi()
     updateLabels()
@@ -50,18 +47,14 @@ class IdleGameScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
   private fun setupUi() {
     clickButton.addListener(object : ClickListener() {
       override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        money += 1.0
+        state.work(1.0)
         updateLabels()
       }
     })
 
     buyBuildingButton.addListener(object : ClickListener() {
       override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        if (money >= buildingCost) {
-          money -= buildingCost
-          buildingCount += 1
-          passiveIncome = buildingCount * passivePerBuilding
-          buildingCost *= 1.2
+        if (state.buyBuilding()) {
           updateLabels()
         }
       }
@@ -88,11 +81,11 @@ class IdleGameScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
   }
 
   private fun updateLabels() {
-    moneyLabel.setText(String.format(Locale.US, "Money: $%.2f", money))
-    passiveLabel.setText(String.format(Locale.US, "Passive income: $%.2f /s", passiveIncome))
-    buildingLabel.setText("Buildings: $buildingCount")
-    buyBuildingButton.setText(String.format(Locale.US, "Buy Building ($%.0f)", buildingCost))
-    buyBuildingButton.isDisabled = money < buildingCost
+    moneyLabel.setText(String.format(Locale.US, "Money: $%.2f", state.money))
+    passiveLabel.setText(String.format(Locale.US, "Passive income: $%.2f /s", state.passiveIncome))
+    buildingLabel.setText("Buildings: ${state.buildingCount}")
+    buyBuildingButton.setText(String.format(Locale.US, "Buy Building ($%.0f)", state.buildingCost))
+    buyBuildingButton.isDisabled = !state.canBuyBuilding()
   }
 
   private fun createButtonStyle(font: BitmapFont): TextButton.TextButtonStyle {
@@ -131,7 +124,7 @@ class IdleGameScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
       return
     }
 
-    money += passiveIncome * delta
+    state.tick(delta)
     updateLabels()
     ScreenUtils.clear(0.1f, 0.1f, 0.12f, 1f)
     stage.act(delta)
