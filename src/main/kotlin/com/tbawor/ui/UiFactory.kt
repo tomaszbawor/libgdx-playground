@@ -14,6 +14,35 @@ import com.badlogic.gdx.utils.Disposable
  * Screens should use these helpers instead of duplicating UI code.
  */
 object UiFactory {
+  // Shared game font loaded from resources (TTF). Ensures consistent visuals.
+  private var sharedPixelFont: BitmapFont? = null
+
+  fun pixelFont(): BitmapFont {
+    if (sharedPixelFont == null) {
+      // Load TTF font from classpath resources using FreeType
+      val handle = com.badlogic.gdx.Gdx.files.classpath("fonts/boldpixels/BoldPixels.ttf")
+      val generator = com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator(handle)
+      val params = com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter().apply {
+        size = 24
+        color = Color.WHITE
+        // Keep crisp/pixelated appearance
+        magFilter = Texture.TextureFilter.Nearest
+        minFilter = Texture.TextureFilter.Nearest
+      }
+      sharedPixelFont = generator.generateFont(params).apply {
+        setUseIntegerPositions(true)
+        region.texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
+      }
+      generator.dispose()
+    }
+    return sharedPixelFont as BitmapFont
+  }
+
+  fun disposeShared() {
+    sharedPixelFont?.dispose()
+    sharedPixelFont = null
+  }
+
   fun createLabelStyle(font: BitmapFont, color: Color = Color.WHITE): Label.LabelStyle =
     Label.LabelStyle(font, color)
 
@@ -24,7 +53,6 @@ object UiFactory {
    */
   fun createButton(
     text: String,
-    font: BitmapFont,
     upColor: Color,
     downColor: Color,
     disposables: MutableList<Disposable>,
@@ -37,7 +65,7 @@ object UiFactory {
     val disabledTexture = buildTexture(disabledColor, disposables)
 
     val style = TextButton.TextButtonStyle().apply {
-      this.font = font
+      this.font = pixelFont()
       this.fontColor = fontColor
       this.disabledFontColor = disabledFontColor
       up = TextureRegionDrawable(upTexture)

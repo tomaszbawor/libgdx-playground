@@ -23,26 +23,23 @@ class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
   private val stage = Stage(ScreenViewport())
   private val disposables = mutableListOf<Disposable>()
 
-  private val font = BitmapFont().also { disposables += it }
+  private val font = com.tbawor.ui.UiFactory.pixelFont()
   private val labelStyle = com.tbawor.ui.UiFactory.createLabelStyle(font, Color.WHITE)
 
   private val newGameButton = com.tbawor.ui.UiFactory.createButton(
     text = "New Game",
-    font = font,
     upColor = Color(0.22f, 0.22f, 0.55f, 1f),
     downColor = Color(0.16f, 0.16f, 0.4f, 1f),
     disposables = disposables
   )
   private val optionsButton = com.tbawor.ui.UiFactory.createButton(
     text = "Options",
-    font = font,
     upColor = Color(0.22f, 0.22f, 0.55f, 1f),
     downColor = Color(0.16f, 0.16f, 0.4f, 1f),
     disposables = disposables
   )
   private val quitButton = com.tbawor.ui.UiFactory.createButton(
     text = "Quit",
-    font = font,
     upColor = Color(0.22f, 0.22f, 0.55f, 1f),
     downColor = Color(0.16f, 0.16f, 0.4f, 1f),
     disposables = disposables

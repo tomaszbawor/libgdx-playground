@@ -26,5 +26,6 @@ class IdleGame : Game() {
   override fun dispose() {
     super.dispose()
     machine.disposeAll()
+    com.tbawor.ui.UiFactory.disposeShared()
   }
 }
