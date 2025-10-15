@@ -28,20 +28,14 @@ class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
 
   private val newGameButton = com.tbawor.ui.UiFactory.createButton(
     text = "New Game",
-    upColor = Color(0.22f, 0.22f, 0.55f, 1f),
-    downColor = Color(0.16f, 0.16f, 0.4f, 1f),
     disposables = disposables
   )
   private val optionsButton = com.tbawor.ui.UiFactory.createButton(
     text = "Options",
-    upColor = Color(0.22f, 0.22f, 0.55f, 1f),
-    downColor = Color(0.16f, 0.16f, 0.4f, 1f),
     disposables = disposables
   )
   private val quitButton = com.tbawor.ui.UiFactory.createButton(
     text = "Quit",
-    upColor = Color(0.22f, 0.22f, 0.55f, 1f),
-    downColor = Color(0.16f, 0.16f, 0.4f, 1f),
     disposables = disposables
   )
 

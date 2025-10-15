@@ -51,23 +51,25 @@ object UiFactory {
    * All created textures are registered in the provided [disposables] list, so
    * the caller can dispose them together with the screen.
    */
+  // Default colors used across the app for buttons
+  private val DEFAULT_UP_COLOR = Color(0.22f, 0.22f, 0.55f, 1f)
+  private val DEFAULT_DOWN_COLOR = Color(0.16f, 0.16f, 0.4f, 1f)
+  private val DEFAULT_DISABLED_COLOR = Color(0.25f, 0.25f, 0.25f, 1f)
+  private val DEFAULT_FONT_COLOR = Color.WHITE
+  private val DEFAULT_DISABLED_FONT_COLOR = Color(0.8f, 0.8f, 0.8f, 1f)
+
   fun createButton(
     text: String,
-    upColor: Color,
-    downColor: Color,
-    disposables: MutableList<Disposable>,
-    disabledColor: Color = Color(0.25f, 0.25f, 0.25f, 1f),
-    fontColor: Color = Color.WHITE,
-    disabledFontColor: Color = Color(0.8f, 0.8f, 0.8f, 1f)
+    disposables: MutableList<Disposable>
   ): TextButton {
-    val upTexture = buildTexture(upColor, disposables)
-    val downTexture = buildTexture(downColor, disposables)
-    val disabledTexture = buildTexture(disabledColor, disposables)
+    val upTexture = buildTexture(DEFAULT_UP_COLOR, disposables)
+    val downTexture = buildTexture(DEFAULT_DOWN_COLOR, disposables)
+    val disabledTexture = buildTexture(DEFAULT_DISABLED_COLOR, disposables)
 
     val style = TextButton.TextButtonStyle().apply {
       this.font = pixelFont()
-      this.fontColor = fontColor
-      this.disabledFontColor = disabledFontColor
+      this.fontColor = DEFAULT_FONT_COLOR
+      this.disabledFontColor = DEFAULT_DISABLED_FONT_COLOR
       up = TextureRegionDrawable(upTexture)
       down = TextureRegionDrawable(downTexture)
       disabled = TextureRegionDrawable(disabledTexture)

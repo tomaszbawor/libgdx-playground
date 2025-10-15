@@ -28,8 +28,6 @@ class OptionsScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
 
   private val backButton = com.tbawor.ui.UiFactory.createButton(
     text = "Back",
-    upColor = Color(0.55f, 0.22f, 0.22f, 1f),
-    downColor = Color(0.4f, 0.16f, 0.16f, 1f),
     disposables = disposables
   )
 

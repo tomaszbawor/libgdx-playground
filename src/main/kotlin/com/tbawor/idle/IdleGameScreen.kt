@@ -37,14 +37,10 @@ class IdleGameScreen(
 
   private val clickButton = com.tbawor.ui.UiFactory.createButton(
     text = "Work (+$1)",
-    upColor = Color(0.22f, 0.55f, 0.22f, 1f),
-    downColor = Color(0.16f, 0.4f, 0.16f, 1f),
     disposables = disposables
   )
   private val buyBuildingButton = com.tbawor.ui.UiFactory.createButton(
     text = "Buy Building",
-    upColor = Color(0.22f, 0.55f, 0.22f, 1f),
-    downColor = Color(0.16f, 0.4f, 0.16f, 1f),
     disposables = disposables
   )
 
