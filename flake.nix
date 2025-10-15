@@ -63,6 +63,43 @@
               ]
             );
           };
+
+          apps = {
+            build = {
+              type = "app";
+              program = toString (pkgs.writeShellScript "build-compostor" ''
+                set -euo pipefail
+                export JAVA_HOME=${jdk}
+                export _JAVA_AWT_WM_NONREPARENTING=1
+                ${lib.optionalString pkgs.stdenv.isLinux "export LD_LIBRARY_PATH=${ldPath}:$LD_LIBRARY_PATH"}
+                if [ -x ./gradlew ]; then
+                  ./gradlew --no-daemon installDist
+                else
+                  ${gradle}/bin/gradle --no-daemon installDist
+                fi
+                echo "Built distribution at: $(pwd)/build/install/compostor"
+                echo "Executable: $(pwd)/build/install/compostor/bin/compostor"
+              '');
+            };
+            run = {
+              type = "app";
+              program = toString (pkgs.writeShellScript "run-compostor" ''
+                set -euo pipefail
+                export JAVA_HOME=${jdk}
+                export _JAVA_AWT_WM_NONREPARENTING=1
+                ${lib.optionalString pkgs.stdenv.isLinux "export LD_LIBRARY_PATH=${ldPath}:$LD_LIBRARY_PATH"}
+                if [ ! -x build/install/compostor/bin/compostor ]; then
+                  echo "Distribution not found. Building with Gradle..."
+                  if [ -x ./gradlew ]; then
+                    ./gradlew --no-daemon installDist
+                  else
+                    ${gradle}/bin/gradle --no-daemon installDist
+                  fi
+                fi
+                exec build/install/compostor/bin/compostor "$@"
+              '');
+            };
+          };
         };
     };
 }
