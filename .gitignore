@@ -7,6 +7,7 @@ build/
 ### IntelliJ IDEA ###
 .idea
 *.iml
+.direnv
 
 ### Kotlin ###
 .kotlin

@@ -10,8 +10,14 @@ repositories {
     mavenCentral()
 }
 
+val gdxVersion = "1.13.1"
+
 dependencies {
     testImplementation(kotlin("test"))
+
+    implementation("com.badlogicgames.gdx:gdx:$gdxVersion")
+    implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion")
+    runtimeOnly("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
 }
 
 tasks.test {
@@ -22,5 +28,5 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.tbawor.MainKt")
+    mainClass.set("com.tbawor.desktop.DesktopLauncher")
 }
