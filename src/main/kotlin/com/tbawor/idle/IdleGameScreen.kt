@@ -1,6 +1,7 @@
 package com.tbawor.idle
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
@@ -17,9 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.tbawor.core.GameState
+import com.tbawor.core.ScreenStateMachine
 import java.util.*
 
-class IdleGameScreen : ScreenAdapter() {
+class IdleGameScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
   private val stage = Stage(ScreenViewport())
   private val disposables = mutableListOf<Disposable>()
 
@@ -122,6 +125,12 @@ class IdleGameScreen : ScreenAdapter() {
   }
 
   override fun render(delta: Float) {
+    // Press 'Q' to return to main menu
+    if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+      machine.change(GameState.MAIN_MENU)
+      return
+    }
+
     money += passiveIncome * delta
     updateLabels()
     ScreenUtils.clear(0.1f, 0.1f, 0.12f, 1f)

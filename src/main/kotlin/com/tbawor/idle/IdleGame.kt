@@ -15,7 +15,7 @@ class IdleGame : Game() {
       this,
       mapOf(
         GameState.MAIN_MENU to { MainMenuScreen(machine) },
-        GameState.PLAYING to { IdleGameScreen() },
+        GameState.PLAYING to { IdleGameScreen(machine) },
         GameState.OPTIONS to { OptionsScreen(machine) }
       )
     )
