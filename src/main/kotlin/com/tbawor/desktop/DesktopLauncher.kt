@@ -6,8 +6,7 @@ import com.tbawor.idle.IdleGame
 
 private const val WINDOW_WIDTH = 500
 private const val WINDOW_HEIGHT = 500
-private const val WINDOW_TITLE = "This window is werid"
-
+private const val WINDOW_TITLE = "Idle game"
 
 object DesktopLauncher {
 
