@@ -10,7 +10,7 @@ repositories {
     mavenCentral()
 }
 
-val gdxVersion = "1.13.1"
+val gdxVersion = "1.13.5"
 
 dependencies {
     testImplementation(kotlin("test"))
@@ -28,5 +28,5 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.tbawor.desktop.DesktopLauncher")
+    mainClass.set("com.tbawor.DesktopLauncher")
 }

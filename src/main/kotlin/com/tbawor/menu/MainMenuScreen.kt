@@ -1,4 +1,4 @@
-package com.tbawor.idle
+package com.tbawor.menu
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.scenes.scene2d.EventListener
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -17,50 +16,41 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import java.util.*
+import com.tbawor.core.GameState
+import com.tbawor.core.ScreenStateMachine
 
-class IdleGameScreen : ScreenAdapter() {
+class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
   private val stage = Stage(ScreenViewport())
   private val disposables = mutableListOf<Disposable>()
 
   private val font = BitmapFont().also { disposables += it }
   private val labelStyle = Label.LabelStyle(font, Color.WHITE)
   private val buttonStyle = createButtonStyle(font)
-  private val moneyLabel = Label("Money: $0.00", labelStyle)
-  private val passiveLabel = Label("Passive income: $0.00 /s", labelStyle)
-  private val buildingLabel = Label("Buildings: 0", labelStyle)
 
-  private val clickButton = TextButton("Work (+$1)", buttonStyle)
-  private val buyBuildingButton = TextButton("Buy Building", buttonStyle)
-
-  private var money = 0.0
-  private var passiveIncome = 0.0
-  private var buildingCount = 0
-  private var buildingCost = 20.0
-  private val passivePerBuilding = 5.0
+  private val newGameButton = TextButton("New Game", buttonStyle)
+  private val optionsButton = TextButton("Options", buttonStyle)
+  private val quitButton = TextButton("Quit", buttonStyle)
 
   init {
     setupUi()
-    updateLabels()
   }
 
   private fun setupUi() {
-    clickButton.addListener(object : ClickListener() {
+    newGameButton.addListener(object : ClickListener() {
       override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        money += 1.0
-        updateLabels()
+        machine.change(GameState.PLAYING)
       }
     })
 
-    buyBuildingButton.addListener(object : ClickListener() {
+    optionsButton.addListener(object : ClickListener() {
       override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        if (money >= buildingCost) {
-          money -= buildingCost
-          buildingCount += 1
-          passiveIncome = buildingCount * passivePerBuilding
-          buildingCost *= 1.2
-          updateLabels()
-        }
+        machine.change(GameState.OPTIONS)
+      }
+    })
+
+    quitButton.addListener(object : ClickListener() {
+      override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        Gdx.app.exit()
       }
     })
 
@@ -70,31 +60,19 @@ class IdleGameScreen : ScreenAdapter() {
       defaults().pad(10f)
       add(Label("Idle Builder", labelStyle)).padBottom(30f)
       row()
-      add(moneyLabel)
+      add(newGameButton).width(220f).height(60f)
       row()
-      add(passiveLabel)
+      add(optionsButton).width(220f).height(60f)
       row()
-      add(buildingLabel).padBottom(20f)
-      row()
-      add(clickButton).width(220f).height(60f)
-      row()
-      add(buyBuildingButton).width(220f).height(60f)
+      add(quitButton).width(220f).height(60f)
     }
 
     stage.addActor(table)
   }
 
-  private fun updateLabels() {
-    moneyLabel.setText(String.format(Locale.US, "Money: $%.2f", money))
-    passiveLabel.setText(String.format(Locale.US, "Passive income: $%.2f /s", passiveIncome))
-    buildingLabel.setText("Buildings: $buildingCount")
-    buyBuildingButton.setText(String.format(Locale.US, "Buy Building ($%.0f)", buildingCost))
-    buyBuildingButton.isDisabled = money < buildingCost
-  }
-
   private fun createButtonStyle(font: BitmapFont): TextButton.TextButtonStyle {
-    val upTexture = buildTexture(Color(0.22f, 0.55f, 0.22f, 1f))
-    val downTexture = buildTexture(Color(0.16f, 0.4f, 0.16f, 1f))
+    val upTexture = buildTexture(Color(0.22f, 0.22f, 0.55f, 1f))
+    val downTexture = buildTexture(Color(0.16f, 0.16f, 0.4f, 1f))
     val disabledTexture = buildTexture(Color(0.25f, 0.25f, 0.25f, 1f))
 
     return TextButton.TextButtonStyle().apply {
@@ -122,9 +100,7 @@ class IdleGameScreen : ScreenAdapter() {
   }
 
   override fun render(delta: Float) {
-    money += passiveIncome * delta
-    updateLabels()
-    ScreenUtils.clear(0.1f, 0.1f, 0.12f, 1f)
+    ScreenUtils.clear(0.08f, 0.08f, 0.1f, 1f)
     stage.act(delta)
     stage.draw()
   }
@@ -143,5 +119,4 @@ class IdleGameScreen : ScreenAdapter() {
     stage.dispose()
     disposables.forEach { it.dispose() }
   }
-
 }

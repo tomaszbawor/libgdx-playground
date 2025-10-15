@@ -1,4 +1,4 @@
-package com.tbawor.desktop
+package com.tbawor
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
@@ -22,5 +22,6 @@ object DesktopLauncher {
 
     Lwjgl3Application(IdleGame(), config)
   }
+
 
 }
