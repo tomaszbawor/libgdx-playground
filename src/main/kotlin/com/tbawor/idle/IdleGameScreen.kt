@@ -30,14 +30,25 @@ class IdleGameScreen(
   private val disposables = mutableListOf<Disposable>()
 
   private val font = BitmapFont().also { disposables += it }
-  private val labelStyle = Label.LabelStyle(font, Color.WHITE)
-  private val buttonStyle = createButtonStyle(font)
+  private val labelStyle = com.tbawor.ui.UiFactory.createLabelStyle(font, Color.WHITE)
   private val moneyLabel = Label("Money: $0.00", labelStyle)
   private val passiveLabel = Label("Passive income: $0.00 /s", labelStyle)
   private val buildingLabel = Label("Buildings: 0", labelStyle)
 
-  private val clickButton = TextButton("Work (+$1)", buttonStyle)
-  private val buyBuildingButton = TextButton("Buy Building", buttonStyle)
+  private val clickButton = com.tbawor.ui.UiFactory.createButton(
+    text = "Work (+$1)",
+    font = font,
+    upColor = Color(0.22f, 0.55f, 0.22f, 1f),
+    downColor = Color(0.16f, 0.4f, 0.16f, 1f),
+    disposables = disposables
+  )
+  private val buyBuildingButton = com.tbawor.ui.UiFactory.createButton(
+    text = "Buy Building",
+    font = font,
+    upColor = Color(0.22f, 0.55f, 0.22f, 1f),
+    downColor = Color(0.16f, 0.4f, 0.16f, 1f),
+    disposables = disposables
+  )
 
   init {
     setupUi()
@@ -88,30 +99,7 @@ class IdleGameScreen(
     buyBuildingButton.isDisabled = !state.canBuyBuilding()
   }
 
-  private fun createButtonStyle(font: BitmapFont): TextButton.TextButtonStyle {
-    val upTexture = buildTexture(Color(0.22f, 0.55f, 0.22f, 1f))
-    val downTexture = buildTexture(Color(0.16f, 0.4f, 0.16f, 1f))
-    val disabledTexture = buildTexture(Color(0.25f, 0.25f, 0.25f, 1f))
 
-    return TextButton.TextButtonStyle().apply {
-      this.font = font
-      fontColor = Color.WHITE
-      disabledFontColor = Color(0.8f, 0.8f, 0.8f, 1f)
-      up = TextureRegionDrawable(upTexture)
-      down = TextureRegionDrawable(downTexture)
-      disabled = TextureRegionDrawable(disabledTexture)
-    }
-  }
-
-  private fun buildTexture(color: Color): Texture {
-    val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
-    pixmap.setColor(color)
-    pixmap.fill()
-    val texture = Texture(pixmap)
-    pixmap.dispose()
-    disposables += texture
-    return texture
-  }
 
   override fun show() {
     Gdx.input.inputProcessor = stage
