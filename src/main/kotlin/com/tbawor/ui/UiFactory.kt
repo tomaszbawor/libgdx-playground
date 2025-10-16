@@ -79,42 +79,6 @@ object UiFactory {
     return TextButton(text, style)
   }
 
-  fun createGreenButton(
-    text: String,
-    disposables: MutableList<Disposable>,
-    // Placeholder regions — update these to correct coordinates later
-    upX: Int = 3, upY: Int = 112, upW: Int = 42, upH: Int = 16,
-    downX: Int = 3, downY: Int = 96, downW: Int = 42, downH: Int = 16,
-    disabledX: Int = 0, disabledY: Int = 0, disabledW: Int = 220, disabledH: Int = 60
-  ): TextButton {
-    // TODO: Centralize loading of the textures at the start of the game
-    // Load the spritesheet from classpath and ensure pixel-perfect filtering
-    val texture = Texture(com.badlogic.gdx.Gdx.files.classpath("assets/ui/craftpix-gui/PNG/Buttons.png")).apply {
-      setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
-    }
-    // Register texture for disposal with the screen
-    disposables += texture
-
-    val upRegion = TextureRegion(texture, upX, upY, upW, upH)
-    val downRegion = TextureRegion(texture, downX, downY, downW, downH)
-
-    // Build drawables
-    val upDrawable = TextureRegionDrawable(upRegion)
-    val downDrawable = TextureRegionDrawable(downRegion)
-    // Disabled uses UP appearance tinted with gray so we don't need a separate region
-    val disabledDrawable = upDrawable.tint(Color(0.3f, 0.3f, 0.3f, 1f))
-
-    val style = TextButton.TextButtonStyle().apply {
-      font = pixelFont()
-      fontColor = DEFAULT_FONT_COLOR
-      disabledFontColor = DEFAULT_DISABLED_FONT_COLOR
-      up = upDrawable
-      down = downDrawable
-      disabled = disabledDrawable
-    }
-
-    return TextButton(text, style)
-  }
   // Building texture form the simple color
   private fun buildTexture(color: Color, disposables: MutableList<Disposable>): Texture {
     val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)

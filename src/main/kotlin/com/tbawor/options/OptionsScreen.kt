@@ -21,7 +21,7 @@ class OptionsScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
   private val font = com.tbawor.ui.UiFactory.pixelFont()
   private val labelStyle = com.tbawor.ui.UiFactory.createLabelStyle(font, Color.WHITE)
 
-  private val backButton = com.tbawor.ui.UiFactory.createGreenButton(
+  private val backButton = com.tbawor.ui.GreenButton(
     text = "Back",
     disposables = disposables
   )

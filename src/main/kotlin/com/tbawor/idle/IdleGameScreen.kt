@@ -29,11 +29,11 @@ class IdleGameScreen(
   private val passiveLabel = Label("Passive income: $0.00 /s", labelStyle)
   private val buildingLabel = Label("Buildings: 0", labelStyle)
 
-  private val clickButton = com.tbawor.ui.UiFactory.createGreenButton(
+  private val clickButton = com.tbawor.ui.GreenButton(
     text = "Work (+$1)",
     disposables = disposables
   )
-  private val buyBuildingButton = com.tbawor.ui.UiFactory.createGreenButton(
+  private val buyBuildingButton = com.tbawor.ui.GreenButton(
     text = "Buy Building",
     disposables = disposables
   )
@@ -71,9 +71,9 @@ class IdleGameScreen(
       row()
       add(buildingLabel).padBottom(20f)
       row()
-      add(clickButton).width(220f).height(60f)
+      add(clickButton).width(300f).height(60f)
       row()
-      add(buyBuildingButton).width(220f).height(60f)
+      add(buyBuildingButton).width(300f).height(60f)
     }
 
     stage.addActor(table)

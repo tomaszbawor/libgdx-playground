@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.tbawor.core.GameState
 import com.tbawor.core.ScreenStateMachine
-import com.tbawor.ui.UiFactory.createGreenButton
+import com.tbawor.ui.GreenButton
 
 class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
   private val stage = Stage(ScreenViewport())
@@ -22,16 +22,16 @@ class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
   private val font = com.tbawor.ui.UiFactory.pixelFont()
   private val labelStyle = com.tbawor.ui.UiFactory.createLabelStyle(font, Color.WHITE)
 
-  private val newGameButton = createGreenButton(
+  private val newGameButton = GreenButton(
     text = "New Game",
     disposables = disposables,
     // Placeholder sprite regions from Main_menu.png; adjust later
   )
-  private val optionsButton = createGreenButton(
+  private val optionsButton = GreenButton(
     text = "Options",
     disposables = disposables
   )
-  private val quitButton = createGreenButton(
+  private val quitButton = GreenButton(
     text = "Quit",
     disposables = disposables
   )
