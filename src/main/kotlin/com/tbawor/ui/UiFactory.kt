@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
@@ -73,6 +74,37 @@ object UiFactory {
       up = TextureRegionDrawable(upTexture)
       down = TextureRegionDrawable(downTexture)
       disabled = TextureRegionDrawable(disabledTexture)
+    }
+
+    return TextButton(text, style)
+  }
+
+  fun createGreenButton(
+    text: String,
+    disposables: MutableList<Disposable>,
+    // Placeholder regions — update these to correct coordinates later
+    upX: Int = 3, upY: Int = 112, upW: Int = 42, upH: Int = 16,
+    downX: Int = 3, downY: Int = 96, downW: Int = 42, downH: Int = 16,
+    disabledX: Int = 0, disabledY: Int = 0, disabledW: Int = 220, disabledH: Int = 60
+  ): TextButton {
+    // Load the spritesheet from classpath and ensure pixel-perfect filtering
+    val texture = Texture(com.badlogic.gdx.Gdx.files.classpath("assets/ui/craftpix-gui/PNG/Buttons.png")).apply {
+      setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
+    }
+    // Register texture for disposal with the screen
+    disposables += texture
+
+    val upRegion = TextureRegion(texture, upX, upY, upW, upH)
+    val downRegion = TextureRegion(texture, downX, downY, downW, downH)
+    val disabledRegion = TextureRegion(texture, disabledX, disabledY, disabledW, disabledH)
+
+    val style = TextButton.TextButtonStyle().apply {
+      font = pixelFont()
+      fontColor = DEFAULT_FONT_COLOR
+      disabledFontColor = DEFAULT_DISABLED_FONT_COLOR
+      up = TextureRegionDrawable(upRegion)
+      down = TextureRegionDrawable(downRegion)
+      disabled = TextureRegionDrawable(disabledRegion)
     }
 
     return TextButton(text, style)

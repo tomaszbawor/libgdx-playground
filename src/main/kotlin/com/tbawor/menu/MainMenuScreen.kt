@@ -3,21 +3,17 @@ package com.tbawor.menu
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.tbawor.core.GameState
 import com.tbawor.core.ScreenStateMachine
+import com.tbawor.ui.UiFactory.createGreenButton
 
 class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
   private val stage = Stage(ScreenViewport())
@@ -26,15 +22,16 @@ class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() 
   private val font = com.tbawor.ui.UiFactory.pixelFont()
   private val labelStyle = com.tbawor.ui.UiFactory.createLabelStyle(font, Color.WHITE)
 
-  private val newGameButton = com.tbawor.ui.UiFactory.createButton(
+  private val newGameButton = createGreenButton(
     text = "New Game",
-    disposables = disposables
+    disposables = disposables,
+    // Placeholder sprite regions from Main_menu.png; adjust later
   )
-  private val optionsButton = com.tbawor.ui.UiFactory.createButton(
+  private val optionsButton = createGreenButton(
     text = "Options",
     disposables = disposables
   )
-  private val quitButton = com.tbawor.ui.UiFactory.createButton(
+  private val quitButton = createGreenButton(
     text = "Quit",
     disposables = disposables
   )

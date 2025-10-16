@@ -4,17 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.scenes.scene2d.EventListener
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
@@ -35,11 +29,11 @@ class IdleGameScreen(
   private val passiveLabel = Label("Passive income: $0.00 /s", labelStyle)
   private val buildingLabel = Label("Buildings: 0", labelStyle)
 
-  private val clickButton = com.tbawor.ui.UiFactory.createButton(
+  private val clickButton = com.tbawor.ui.UiFactory.createGreenButton(
     text = "Work (+$1)",
     disposables = disposables
   )
-  private val buyBuildingButton = com.tbawor.ui.UiFactory.createButton(
+  private val buyBuildingButton = com.tbawor.ui.UiFactory.createGreenButton(
     text = "Buy Building",
     disposables = disposables
   )

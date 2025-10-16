@@ -3,16 +3,11 @@ package com.tbawor.options
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
@@ -26,7 +21,7 @@ class OptionsScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
   private val font = com.tbawor.ui.UiFactory.pixelFont()
   private val labelStyle = com.tbawor.ui.UiFactory.createLabelStyle(font, Color.WHITE)
 
-  private val backButton = com.tbawor.ui.UiFactory.createButton(
+  private val backButton = com.tbawor.ui.UiFactory.createGreenButton(
     text = "Back",
     disposables = disposables
   )
