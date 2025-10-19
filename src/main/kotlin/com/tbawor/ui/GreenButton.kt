@@ -14,47 +14,48 @@ import com.badlogic.gdx.utils.Disposable
  * alongside the screen that owns them.
  */
 class GreenButton(
-  text: String,
-  disposables: MutableList<Disposable>,
+	text: String,
+	disposables: MutableList<Disposable>,
 ) : TextButton(text, buildStyle(disposables)) {
+	companion object {
+		// Hardcoded sprite regions for the green button on the CraftPix Buttons.png
+		private const val UP_X: Int = 3
+		private const val UP_Y: Int = 112
+		private const val UP_W: Int = 42
+		private const val UP_H: Int = 16
 
-  companion object {
-    // Hardcoded sprite regions for the green button on the CraftPix Buttons.png
-    private const val UP_X: Int = 3
-    private const val UP_Y: Int = 112
-    private const val UP_W: Int = 42
-    private const val UP_H: Int = 16
+		private const val DOWN_X: Int = 3
+		private const val DOWN_Y: Int = 96
+		private const val DOWN_W: Int = 42
+		private const val DOWN_H: Int = 16
 
-    private const val DOWN_X: Int = 3
-    private const val DOWN_Y: Int = 96
-    private const val DOWN_W: Int = 42
-    private const val DOWN_H: Int = 16
+		private fun buildStyle(disposables: MutableList<Disposable>): TextButtonStyle {
+			// Load the spritesheet from classpath and ensure pixel-perfect filtering
+			val texture =
+				Texture(
+					com.badlogic.gdx.Gdx.files
+						.classpath("assets/ui/craftpix-gui/PNG/Buttons.png"),
+				).apply {
+					setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
+				}
+			// Register texture for disposal with the screen
+			disposables += texture
 
-    private fun buildStyle(
-      disposables: MutableList<Disposable>,
-    ): TextButtonStyle {
-      // Load the spritesheet from classpath and ensure pixel-perfect filtering
-      val texture = Texture(com.badlogic.gdx.Gdx.files.classpath("assets/ui/craftpix-gui/PNG/Buttons.png")).apply {
-        setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
-      }
-      // Register texture for disposal with the screen
-      disposables += texture
+			val upRegion = TextureRegion(texture, UP_X, UP_Y, UP_W, UP_H)
+			val downRegion = TextureRegion(texture, DOWN_X, DOWN_Y, DOWN_W, DOWN_H)
 
-      val upRegion = TextureRegion(texture, UP_X, UP_Y, UP_W, UP_H)
-      val downRegion = TextureRegion(texture, DOWN_X, DOWN_Y, DOWN_W, DOWN_H)
+			val upDrawable = TextureRegionDrawable(upRegion)
+			val downDrawable = TextureRegionDrawable(downRegion)
+			val disabledDrawable = upDrawable.tint(Color(0.3f, 0.3f, 0.3f, 1f))
 
-      val upDrawable = TextureRegionDrawable(upRegion)
-      val downDrawable = TextureRegionDrawable(downRegion)
-      val disabledDrawable = upDrawable.tint(Color(0.3f, 0.3f, 0.3f, 1f))
-
-      return TextButtonStyle().apply {
-        font = UiFactory.pixelFont()
-        fontColor = Color.WHITE
-        disabledFontColor = Color(0.8f, 0.8f, 0.8f, 1f)
-        up = upDrawable
-        down = downDrawable
-        disabled = disabledDrawable
-      }
-    }
-  }
+			return TextButtonStyle().apply {
+				font = UiFactory.pixelFont()
+				fontColor = Color.WHITE
+				disabledFontColor = Color(0.8f, 0.8f, 0.8f, 1f)
+				up = upDrawable
+				down = downDrawable
+				disabled = disabledDrawable
+			}
+		}
+	}
 }

@@ -14,90 +14,116 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.tbawor.core.GameState
 import com.tbawor.core.ScreenStateMachine
 import com.tbawor.ui.GreenButton
+import com.tbawor.ui.UiFactory
 
-class MainMenuScreen(private val machine: ScreenStateMachine) : ScreenAdapter() {
-  private val stage = Stage(ScreenViewport())
-  private val disposables = mutableListOf<Disposable>()
+class MainMenuScreen(
+	private val machine: ScreenStateMachine,
+) : ScreenAdapter() {
+	private val stage = Stage(ScreenViewport())
+	private val disposables = mutableListOf<Disposable>()
 
-  private val font = com.tbawor.ui.UiFactory.pixelFont()
-  private val labelStyle = com.tbawor.ui.UiFactory.createLabelStyle(font, Color.WHITE)
+	private val font = UiFactory.pixelFont()
+	private val labelStyle = UiFactory.createLabelStyle(font, Color.WHITE)
 
-  private val newGameButton = GreenButton(
-    text = "New Game",
-    disposables = disposables,
-    // Placeholder sprite regions from Main_menu.png; adjust later
-  )
-  private val optionsButton = GreenButton(
-    text = "Options",
-    disposables = disposables
-  )
-  private val quitButton = GreenButton(
-    text = "Quit",
-    disposables = disposables
-  )
+	private val newGameButton =
+		GreenButton(
+			text = "New Game",
+			disposables = disposables,
+		)
+	private val optionsButton =
+		GreenButton(
+			text = "Options",
+			disposables = disposables,
+		)
+	private val quitButton =
+		GreenButton(
+			text = "Quit",
+			disposables = disposables,
+		)
 
-  init {
-    setupUi()
-  }
+	init {
+		setupUi()
+	}
 
-  private fun setupUi() {
-    newGameButton.addListener(object : ClickListener() {
-      override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        machine.change(GameState.PLAYING)
-      }
-    })
+	private fun setupUi() {
+		newGameButton.addListener(
+			object : ClickListener() {
+				override fun clicked(
+					event: InputEvent?,
+					x: Float,
+					y: Float,
+				) {
+					machine.change(GameState.PLAYING)
+				}
+			},
+		)
 
-    optionsButton.addListener(object : ClickListener() {
-      override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        machine.change(GameState.OPTIONS)
-      }
-    })
+		optionsButton.addListener(
+			object : ClickListener() {
+				override fun clicked(
+					event: InputEvent?,
+					x: Float,
+					y: Float,
+				) {
+					machine.change(GameState.OPTIONS)
+				}
+			},
+		)
 
-    quitButton.addListener(object : ClickListener() {
-      override fun clicked(event: InputEvent?, x: Float, y: Float) {
-        Gdx.app.exit()
-      }
-    })
+		quitButton.addListener(
+			object : ClickListener() {
+				override fun clicked(
+					event: InputEvent?,
+					x: Float,
+					y: Float,
+				) {
+					Gdx.app.exit()
+				}
+			},
+		)
 
-    val table = Table().apply {
-      setFillParent(true)
-      pad(20f)
-      defaults().pad(10f)
-      add(Label("Idle Builder", labelStyle)).padBottom(30f)
-      row()
-      add(newGameButton).width(300f).height(60f)
-      row()
-      add(optionsButton).width(300f).height(60f)
-      row()
-      add(quitButton).width(300f).height(60f)
-    }
+		val table =
+			Table().apply {
+				setFillParent(true)
+				pad(20f)
+				defaults().pad(10f)
+				add(Label("Idle Builder", labelStyle)).padBottom(30f)
+				row()
+				add(newGameButton).width(300f).height(60f)
+				row()
+				add(optionsButton).width(300f).height(60f)
+				row()
+				add(quitButton).width(300f).height(60f)
+			}
 
-    stage.addActor(table)
-  }
+		stage.addActor(table)
+	}
 
+	override fun show() {
+		Gdx.input.inputProcessor = stage
+	}
 
-  override fun show() {
-    Gdx.input.inputProcessor = stage
-  }
+	override fun render(delta: Float) {
+		ScreenUtils.clear(0.08f, 0.08f, 0.1f, 1f)
+		stage.act(delta)
+		stage.draw()
+	}
 
-  override fun render(delta: Float) {
-    ScreenUtils.clear(0.08f, 0.08f, 0.1f, 1f)
-    stage.act(delta)
-    stage.draw()
-  }
+	override fun resize(
+		width: Int,
+		height: Int,
+	) {
+		stage.viewport.update(width, height, true)
+	}
 
-  override fun resize(width: Int, height: Int) {
-    stage.viewport.update(width, height, true)
-  }
+	override fun hide() {
+		if (Gdx.input.inputProcessor === stage) {
+			Gdx.input.inputProcessor = null
+		}
+	}
 
-  override fun hide() {
-    if (Gdx.input.inputProcessor === stage) {
-      Gdx.input.inputProcessor = null
-    }
-  }
-
-  override fun dispose() {
-    stage.dispose()
-    disposables.forEach { it.dispose() }
-  }
+	override fun dispose() {
+		stage.dispose()
+		disposables.forEach { it.dispose() }
+	}
 }
